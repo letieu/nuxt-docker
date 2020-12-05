@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  nuxt:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - "3333:3333"
+    command:
+      "yarn run start"
+
+  nginx:
+    image: nginx:1.13
+    container_name: nginx
+    ports: 
+      - "2702:80"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./nginx/access.log:/var/log/nginx/access.log
+      - ./nginx/error.log:/var/log/nginx/error.log
+    depends_on:
+      - nuxt
